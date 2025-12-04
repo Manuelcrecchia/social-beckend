@@ -3,16 +3,16 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   name      String
-  email     String   @unique
+  email     String     @unique
   password  String
-  createdAt DateTime @default(now())
+  createdAt DateTime   @default(now())
 
   accounts  Account[]
   posts     Scheduler[]
@@ -22,16 +22,15 @@ model User {
 model Account {
   id           Int      @id @default(autoincrement())
   platform     String
-  username     String?      // nuovo campo
-  token        String?      // access token
-  refreshToken String?      // refresh token
-  status       String   @default("connected") // stato account
+  username     String?
+  token        String?
+  refreshToken String?
+  status       String   @default("connected")
   createdAt    DateTime @default(now())
 
   userId Int
   user   User     @relation(fields: [userId], references: [id])
 }
-
 
 model Scheduler {
   id        Int      @id @default(autoincrement())
@@ -39,7 +38,7 @@ model Scheduler {
   caption   String?
   date      DateTime
   userId    Int
-  user User @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Analytics {
