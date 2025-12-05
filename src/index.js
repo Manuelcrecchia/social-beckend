@@ -1,3 +1,5 @@
+// FILE: src/index.js
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -13,18 +15,19 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-import cors from "cors";
-
+// ✅ CORS (solo una volta, non due)
 app.use(cors({
-  origin: ["http://localhost:4200", "http://127.0.0.1:4200", "https://socialfrontend-url-render.com"],
+  origin: [
+    "http://localhost:4200",
+    "http://127.0.0.1:4200",
+    "https://socialfrontend-url-render.com"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
+
 app.use(express.json());
-
-
-
 
 // 👇 Routes
 app.use("/auth", authRoutes);
@@ -33,11 +36,12 @@ app.use("/analytics", analyticsRoutes);
 app.use("/scheduler", schedulerRoutes);
 app.use("/aicoach", aicoachRoutes);
 
+// Root route
 app.get("/", (req, res) => {
   res.send("🔥 Social Backend is running (Render Version)!");
 });
 
-// Avvio server
+// Start server
 app.listen(PORT, () => {
   console.log(`🔥 Backend running on port ${PORT}`);
 });
