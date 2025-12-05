@@ -31,19 +31,22 @@ export const startTikTokOAuth = (req, res) => {
     expiresIn: "10m",
   });
 
-  const params = new URLSearchParams({
-    client_key: process.env.TIKTOK_CLIENT_KEY,
-    response_type: "code",
-    scope: "user.info.basic,user.info.profile,user.info.stats",
-    redirect_uri: process.env.TIKTOK_REDIRECT_URI, // ✅ FIX QUI
-    state,
-  });
+  const redirectUri = process.env.TIKTOK_REDIRECT_URI; // 👈 NON CODIFICARLA
+
+  const params = new URLSearchParams();
+  params.append("client_key", process.env.TIKTOK_CLIENT_KEY);
+  params.append("response_type", "code");
+  params.append("scope", "user.info.basic,user.info.profile,user.info.stats");
+  params.append("redirect_uri", redirectUri);
+  params.append("state", state);
 
   const url = `${TIKTOK_AUTH_URL}?${params.toString()}`;
+
   console.log("🌍 OAUTH URL:", url);
 
   return res.redirect(url);
 };
+
 
 /* -------------------------------------------------------------
    2) CALLBACK
