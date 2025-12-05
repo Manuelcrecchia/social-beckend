@@ -35,7 +35,7 @@ export const startTikTokOAuth = (req, res) => {
     client_key: process.env.TIKTOK_CLIENT_KEY,
     response_type: "code",
     scope: "user.info.basic,user.info.profile,user.info.stats",
-    redirect_uri: encodeURIComponent(process.env.TIKTOK_REDIRECT_URI),
+    redirect_uri: process.env.TIKTOK_REDIRECT_URI, // ✅ FIX QUI
     state,
   });
 
@@ -75,7 +75,7 @@ export const handleTikTokCallback = async (req, res) => {
       client_secret: process.env.TIKTOK_CLIENT_SECRET,
       code,
       grant_type: "authorization_code",
-      redirect_uri: encodeURIComponent(process.env.TIKTOK_REDIRECT_URI),
+      redirect_uri: process.env.TIKTOK_REDIRECT_URI, // ✅ FIX QUI
     }),
   });
 
