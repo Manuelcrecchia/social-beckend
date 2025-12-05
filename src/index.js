@@ -13,13 +13,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ ABILITA CORS PERMAMENTE (FONDAMENTALE PER RENDER)
-app.use(cors({
-  origin: "*",
-  methods: "GET,POST,PUT,DELETE,OPTIONS",
-  allowedHeaders: "Content-Type, Authorization",
-}));
+import cors from "cors";
 
+app.use(cors({
+  origin: ["http://localhost:4200", "http://127.0.0.1:4200", "https://socialfrontend-url-render.com"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
 app.use(express.json());
 
 // 👇 Routes

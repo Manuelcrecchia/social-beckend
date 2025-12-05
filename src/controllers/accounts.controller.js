@@ -1,7 +1,7 @@
 import { getUserAccounts, deleteAccountById } from "../services/accounts.service.js";
 
 export const getAccounts = async (req, res) => {
-  const userId = req.user.id;
+  const userId = req.userId;
   const accounts = await getUserAccounts(userId);
   res.json(accounts);
 };
