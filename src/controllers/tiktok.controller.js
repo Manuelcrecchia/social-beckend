@@ -24,7 +24,7 @@ export const startTikTokOAuth = (req, res) => {
     return res.status(401).send("Invalid token");
   }
 
-  const userId = payload.id;   // <-- STANDARD NOW
+  const userId = payload.id;
   console.log("👤 OAuth User ID:", userId);
 
   const state = jwt.sign({ userId }, process.env.JWT_SECRET, {
@@ -35,7 +35,7 @@ export const startTikTokOAuth = (req, res) => {
     client_key: process.env.TIKTOK_CLIENT_KEY,
     response_type: "code",
     scope: "user.info.basic,user.info.profile,user.info.stats",
-    redirect_uri: process.env.TIKTOK_REDIRECT_URI,
+    redirect_uri: encodeURIComponent(process.env.TIKTOK_REDIRECT_URI),
     state,
   });
 
@@ -63,7 +63,7 @@ export const handleTikTokCallback = async (req, res) => {
     return res.status(400).send("Invalid state");
   }
 
-  const userId = decoded.userId; // OK
+  const userId = decoded.userId;
   console.log("👤 State userId:", userId);
 
   /* ---------------- TOKEN EXCHANGE ---------------- */
@@ -75,7 +75,7 @@ export const handleTikTokCallback = async (req, res) => {
       client_secret: process.env.TIKTOK_CLIENT_SECRET,
       code,
       grant_type: "authorization_code",
-      redirect_uri: process.env.TIKTOK_REDIRECT_URI,
+      redirect_uri: encodeURIComponent(process.env.TIKTOK_REDIRECT_URI),
     }),
   });
 

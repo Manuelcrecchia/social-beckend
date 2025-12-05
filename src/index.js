@@ -23,6 +23,15 @@ app.use(cors({
 }));
 app.use(express.json());
 
+process.on("uncaughtException", (err) => {
+  console.error("UNCAUGHT EXCEPTION:", err);
+});
+
+process.on("unhandledRejection", (reason) => {
+  console.error("UNHANDLED PROMISE REJECTION:", reason);
+});
+
+
 // 👇 Routes
 app.use("/auth", authRoutes);
 app.use("/accounts", accountRoutes);
