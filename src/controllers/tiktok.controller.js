@@ -33,19 +33,17 @@ export const startTikTokOAuth = (req, res) => {
 
   const redirectUri = process.env.TIKTOK_REDIRECT_URI; // 👈 NON CODIFICARLA
 
-  const params = new URLSearchParams();
-  params.append("client_key", process.env.TIKTOK_CLIENT_KEY);
-  params.append("response_type", "code");
-  params.append("scope", "user.info.basic,user.info.profile,user.info.stats");
-  params.append("redirect_uri", redirectUri);
-  params.append("state", state);
+const params = new URLSearchParams();
 
-  const url = `${TIKTOK_AUTH_URL}?${params.toString()}`;
+params.append("client_key", process.env.TIKTOK_CLIENT_KEY);
+params.append("response_type", "code");
+params.append("scope", "user.info.basic,user.info.profile,user.info.stats");
 
-  console.log("🌍 OAUTH URL:", url);
+// ❗ IMPORTANTISSIMO: nessuna encoding automatica
+params.append("redirect_uri", decodeURIComponent(process.env.TIKTOK_REDIRECT_URI));
 
-  return res.redirect(url);
-};
+params.append("state", state);
+
 
 
 /* -------------------------------------------------------------
@@ -70,17 +68,17 @@ export const handleTikTokCallback = async (req, res) => {
   console.log("👤 State userId:", userId);
 
   /* ---------------- TOKEN EXCHANGE ---------------- */
-  const tokenRes = await fetch(TIKTOK_TOKEN_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      client_key: process.env.TIKTOK_CLIENT_KEY,
-      client_secret: process.env.TIKTOK_CLIENT_SECRET,
-      code,
-      grant_type: "authorization_code",
-      redirect_uri: process.env.TIKTOK_REDIRECT_URI, // ✅ FIX QUI
-    }),
-  });
+ const params = new URLSearchParams();
+
+params.append("client_key", process.env.TIKTOK_CLIENT_KEY);
+params.append("response_type", "code");
+params.append("scope", "user.info.basic,user.info.profile,user.info.stats");
+
+// ❗ IMPORTANTISSIMO: nessuna encoding automatica
+params.append("redirect_uri", decodeURIComponent(process.env.TIKTOK_REDIRECT_URI));
+
+params.append("state", state);
+
 
   const tokenJson = await tokenRes.json();
   console.log("💬 TOKEN JSON:", tokenJson);
